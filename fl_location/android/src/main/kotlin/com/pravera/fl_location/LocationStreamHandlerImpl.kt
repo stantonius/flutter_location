@@ -2,6 +2,7 @@ package com.pravera.fl_location
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.pravera.fl_location.errors.ErrorCodes
 import com.pravera.fl_location.models.LocationSettings
 import com.pravera.fl_location.service.LocationDataCallback
@@ -40,9 +41,9 @@ class LocationStreamHandlerImpl(
 	}
 
 	override fun onCancel(arguments: Any?) {
-		if (locationDataProviderHashCode == null) return
-
-		serviceProvider
+		if (locationDataProviderHashCode == null)
+			Log.d("LocationStreamHandler", "locationDataProviderHashCode > onCancel called")
+			return serviceProvider
 				.getLocationDataProviderManager()
 				.stopLocationUpdates(locationDataProviderHashCode!!)
 	}
@@ -57,7 +58,11 @@ class LocationStreamHandlerImpl(
 	}
 
 	override fun disposeChannel() {
+		Log.d("LocationStreamHandler", "disposeCHannel called")
 		if (::channel.isInitialized)
+			serviceProvider.getLocationServicesStatusWatcher().stop(context)
+//			serviceProvider.getLocationDataProviderManager().stopLocationUpdates(locationDataProviderHashCode!!)
+			Log.d("LocationStreamHandler", "channelInitialized > disposeCHannel called")
 			channel.setStreamHandler(null)
 	}
 }

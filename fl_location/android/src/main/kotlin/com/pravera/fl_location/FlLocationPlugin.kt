@@ -1,5 +1,6 @@
 package com.pravera.fl_location
 
+import android.util.Log
 import com.pravera.fl_location.service.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -34,12 +35,18 @@ class FlLocationPlugin: FlutterPlugin, ActivityAware, ServiceProvider {
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+
     if (::methodCallHandler.isInitialized)
+      Log.d("FlLocationPlugin", "onDetatchedFromEngine > methodCallHandler disposed")
       methodCallHandler.disposeChannel()
     if (::locationStreamHandler.isInitialized)
+      Log.d("FlLocationPlugin", "onDetatchedFromEngine > locationStreamHandler disposed")
       locationStreamHandler.disposeChannel()
+
     if (::locationServicesStatusStreamHandler.isInitialized)
-      locationServicesStatusStreamHandler.disposeChannel()
+      Log.d("FlLocationPlugin", "onDetatchedFromEngine > locationServicesStatusStreamHandler disposed")
+
+    locationServicesStatusStreamHandler.disposeChannel()
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -52,6 +59,7 @@ class FlLocationPlugin: FlutterPlugin, ActivityAware, ServiceProvider {
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
+    Log.d("FlLocationPlugin", "onDetachedFromActivityForConfigChanges")
     onDetachedFromActivity()
   }
 
@@ -66,6 +74,7 @@ class FlLocationPlugin: FlutterPlugin, ActivityAware, ServiceProvider {
     methodCallHandler.setActivity(null)
     locationStreamHandler.setActivity(null)
     locationServicesStatusStreamHandler.setActivity(null)
+    Log.d("FlLocationPlugin", "onDetatchedFromActivity called")
   }
 
   override fun getLocationPermissionManager() = locationPermissionManager

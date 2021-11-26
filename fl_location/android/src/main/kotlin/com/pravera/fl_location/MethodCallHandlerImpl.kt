@@ -2,6 +2,7 @@ package com.pravera.fl_location
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.pravera.fl_location.errors.ErrorCodes
 import com.pravera.fl_location.models.LocationPermission
 import com.pravera.fl_location.models.LocationSettings
@@ -92,7 +93,8 @@ class MethodCallHandlerImpl(
 	}
 
 	override fun disposeChannel() {
-		if (::channel.isInitialized)
+		Log.d("MethodCallHandlerImpl", "disposeChannel called")
+
 			channel.setMethodCallHandler(null)
 	}
 }
